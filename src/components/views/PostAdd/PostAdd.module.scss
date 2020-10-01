@@ -1,4 +1,38 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+label{
+	display: block;
+	margin-top: 10px;
+	text-align: center;
+}
+.center{
+	text-align: center;
+	button{
+		display: inline-block;
+		margin: 20px auto;
+		padding:20px 60px;
+		outline: none;
+		background-color: #27ae60;
+		border: none;
+		border-radius:5px;
+		box-shadow: 0 9px #95a5a6;
+	}
+	button:hover{
+		background-color: color-primary;
+	}
+	button:active {
+		background-color: color-primary;
+		box-shadow: 0 5px #95a5a6;
+		transform: translateY(4px);
+	}
+}
+
+.flex{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.titlemargin{
+	margin-left: 180px;
+}

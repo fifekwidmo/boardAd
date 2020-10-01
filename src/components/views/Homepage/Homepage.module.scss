@@ -1,4 +1,26 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.container {
+  padding: 20px;
+	margin: 20px;
+	background-color: #a52a2a;
+	height: 500px;
+	font-family: "Menlo";
+}
+h2{
+	font-size: 3em;
+	text-align: center;
+	color: $color-light;
+  text-decoration: underline;
+}
+
+.mainP{
+	text-align: center;
+	color: #fff;
+	height: 2em;
+}
+
+.mainP:hover {
+  font-size: 2em;
+  cursor: pointer;
+}
