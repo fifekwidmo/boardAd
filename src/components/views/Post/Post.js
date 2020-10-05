@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import clsx from 'clsx';
 import { connect } from 'react-redux';
-import { getPostById } from '../../../redux/postsRedux';
+import { getPostById, loadPostById  } from '../../../redux/postsRedux';
 import { Link } from 'react-router-dom';
 import styles from './Post.module.scss';
 import EditIcon from '@material-ui/icons/Edit';
@@ -16,7 +15,13 @@ class Component extends React.Component {
     className: PropTypes.string,
     match: PropTypes.object,
     post: PropTypes.object,
+    getPost: PropTypes.func,
   };
+	
+  componentDidMount() {
+    this.props.getPost(this.props.match.params.id);
+  }
+
   render() {
     const { match, post } = this.props;
     const id = match.params.id;
@@ -37,9 +42,15 @@ class Component extends React.Component {
   }
 }
 const mapStateToProps = (state, props) => ({
-  post: getPostById(state, props.match.params.id),
+  post: getPostById(state),
 });
-const Container = connect(mapStateToProps)(Component);
+
+//to delete props
+
+const mapDispatchToProps = dispatch => ({
+  getPost: id => dispatch(loadPostById(id)),
+});
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 export {
   Container as Post,
   Component as PostComponent,

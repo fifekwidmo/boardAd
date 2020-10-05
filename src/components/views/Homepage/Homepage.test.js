@@ -1,4 +1,3 @@
-  
 import React from 'react';
 import { shallow } from 'enzyme';
 import { HomepageComponent } from './Homepage';
@@ -14,6 +13,7 @@ const mockProps = {
       price: '20',
     },
   ],
+  fetchPublishedPosts: () => console.log('function fetchPublishedPosts'),
 };
 
 describe('Component Homepage', () => {

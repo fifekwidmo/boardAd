@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { initialState } from '../../redux/initialState';
-import { Link } from 'react-router-dom';
+// import { initialState } from '../../redux/initialState';
+import { Link, withRouter } from 'react-router-dom';
 import DoneIcon from '@material-ui/icons/Done';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -10,7 +10,6 @@ import CancelIcon from '@material-ui/icons/Cancel';
 class SubmitPost extends React.Component {
   state = {
     post: {
-      id: initialState.posts.data.length + 1,
       title: '',
       description: '',
       dateOfPublication: '',
@@ -44,19 +43,30 @@ class SubmitPost extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { action, type } = this.props;
+    const { post } = this.state;
     let error = null;
+    if (post.title.length < 10) error = `Title should has min 10 signs`;
+    else if (post.description.length < 20) error = `Description should has min 20 signs`;
+    else if (!post.dateOfPublication) error = 'Please insert correct date ';
+    else if (!post.email) error = 'Please insert correct email ';
+
     if (!error) {
-      action(this.state.post);
-      alert(`Your post has been ${type}`);
+      const formData = new FormData();
+      for (let key of ['title', 'description', 'dateOfPublication', 'dateOfUpdate', 'email', 'status', 'price']) {
+        formData.append(key, post[key]);
+        console.log('postKey', post[key]);
+      }
+      if (type === 'edited') {
+        action(this.props.postEdit._id, formData);
+      } else action(formData);
       this.setState({
         post: {
-          id: initialState.posts.data.length + 1,
           title: '',
           description: '',
           dateOfPublication: '',
           dateOfUpdate: new Date().toISOString().slice(0, 10),
           email: '',
-          status: 'draft',
+          status: '',
           price: '',
         },
       });
@@ -67,13 +77,14 @@ class SubmitPost extends React.Component {
   }
   componentDidMount() {
     const { postEdit } = this.props;
+    console.log('postedit', postEdit);
     if (postEdit) {
       this.setState({
         post: {
           id: postEdit.id,
           title: postEdit.title,
           description: postEdit.description,
-          dateOfPublication: postEdit.dateOfPublication,
+          dateOfPublication: (postEdit.dateOfPublication === undefined) ? postEdit.dateOfPublication : postEdit.dateOfPublication.slice(0, 10),
           dateOfUpdate: new Date().toISOString().slice(0, 10),
           email: postEdit.email,
           status: postEdit.status,
@@ -82,16 +93,17 @@ class SubmitPost extends React.Component {
       });
     }
   }
+
   render() {
-    const { post, value } = this.state;
+    const { post } = this.state;
     const { postEdit } = this.props;
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <label htmlFor='title'> Title:
-          <input id='title' type='text' name='title' value={this.state.post.title} onChange={this.handleChange} required />
+          <input id='title' type='text' name='title' value={post.title} onChange={this.handleChange} required />
         </label>
         <label htmlFor='description'>Description:
-          <textarea id='description' cols={40} rows={5} name='description' value={this.state.post.description} onChange={this.handleChange} required />
+          <textarea id='description' cols={40} rows={5} name='description' value={post.description} onChange={this.handleChange} required />
         </label>
         <label htmlFor='price'>Price:
           <input id='price' type='text' name='price' value={post.price} onChange={this.handleChange} />
@@ -100,7 +112,7 @@ class SubmitPost extends React.Component {
           <input id='email' type='email' name='email' value={post.email} onChange={this.handleChange} required />
         </label>
         <label htmlFor='status'>Status:
-          <select id='status' name='status' value={value} onChange={this.handleChange} >
+          <select id='status' name='status' value={post.status} onChange={this.handleChange} >
             <option value='draft'>Draft</option>
             <option value='published'>Published</option>
             <option value='closed'>Closed</option>
@@ -119,4 +131,4 @@ class SubmitPost extends React.Component {
   }
 }
 
-export default SubmitPost;
+export default withRouter(SubmitPost);

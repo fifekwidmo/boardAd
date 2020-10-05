@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { initialState } from '../../../redux/initialState';
 import clsx from 'clsx';
-// import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux';
+import { getAll, fetchPublished } from '../../../redux/postsRedux';
 import styles from './Homepage.module.scss';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -14,8 +13,9 @@ import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-const Component = ({ children, posts }) => (
+const Component = ({ children, posts, fetchPublishedPosts }) => (
   <div className={clsx(styles.container, styles.root)}>
+    {fetchPublishedPosts()}
     {initialState.role === 'user' || initialState.role === 'admin' ?
       <div>
         <BottomNavigation>
@@ -26,10 +26,10 @@ const Component = ({ children, posts }) => (
         </BottomNavigation>
         <h2>List</h2>
         {posts.map(post =>
-          <NavLink key={post.id} to={`/post/${post.id}`}>   
+          <NavLink key={post._id} to={`/post/${post._id}`}>   
             <p className={styles.mainP}>{post.title}</p>
           </NavLink>
-        )}
+        ).reverse()}
       </div> :
       null
     }
@@ -39,12 +39,15 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   posts: PropTypes.array,
+  fetchPublishedPosts: PropTypes.func,
 };
 const mapStateToProps = state => ({
   posts: getAll(state),
 });
-const Container = connect(mapStateToProps,null)(Component);
-
+const mapDispatchToProps = dispatch => ({
+  fetchPublishedPosts: () => dispatch(fetchPublished()),
+});
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 export {
   Container as Homepage,
   Component as HomepageComponent,
