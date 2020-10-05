@@ -32,6 +32,5 @@ Component.propTypes = {
 
 export {
   Component as Header,
-  // Container as Header,
   Component as HeaderComponent,
 };

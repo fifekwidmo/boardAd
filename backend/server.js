@@ -2,9 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-
 const postsRoutes = require('./routes/posts.routes');
-
 const app = express();
 
 /* MIDDLEWARE */

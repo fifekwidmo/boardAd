@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { initialState } from '../../redux/initialState';
 import { Link, withRouter } from 'react-router-dom';
 import DoneIcon from '@material-ui/icons/Done';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -54,11 +53,12 @@ class SubmitPost extends React.Component {
       const formData = new FormData();
       for (let key of ['title', 'description', 'dateOfPublication', 'dateOfUpdate', 'email', 'status', 'price']) {
         formData.append(key, post[key]);
-        console.log('postKey', post[key]);
+        // console.log('postKey', post[key]);
       }
       if (type === 'edited') {
         action(this.props.postEdit._id, formData);
-      } else action(formData);
+      } else 
+        action(formData);
       this.setState({
         post: {
           title: '',
@@ -77,7 +77,7 @@ class SubmitPost extends React.Component {
   }
   componentDidMount() {
     const { postEdit } = this.props;
-    console.log('postedit', postEdit);
+    // console.log('postedit', postEdit);
     if (postEdit) {
       this.setState({
         post: {
@@ -123,7 +123,7 @@ class SubmitPost extends React.Component {
           <input type='date' name='dateOfPublication' value={post.dateOfPublication} onChange={this.handleChange} required />
         </label>
         <BottomNavigation>
-          <BottomNavigationAction variant='contained' icon={<DoneIcon />} onClick={this.handleSubmit}>{postEdit ? 'Edit' : 'Add'} </BottomNavigationAction>
+          <BottomNavigationAction variant='contained' icon={<DoneIcon />} to={`${process.env.PUBLIC_URL}/`} onClick={this.handleSubmit}>{postEdit ? 'Edit' : 'Add'} </BottomNavigationAction>
           <BottomNavigationAction component={Link} to={`${process.env.PUBLIC_URL}/`} variant="contained" icon={<CancelIcon />}></BottomNavigationAction>
         </BottomNavigation>
       </form>
