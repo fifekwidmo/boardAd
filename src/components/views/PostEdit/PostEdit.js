@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getPostById, updatePost } from '../../../redux/postsRedux';
 import SubmitPost from '../../features/SubmitPost.js';
 import styles from './PostEdit.module.scss';
+
 const Component = ({ className, children, match, post, editPost }) => {
   const id = match.params.id;
   return (
@@ -14,6 +15,7 @@ const Component = ({ className, children, match, post, editPost }) => {
     </div>
   );
 };
+
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
@@ -21,13 +23,17 @@ Component.propTypes = {
   post: PropTypes.object,
   editPost: PropTypes.object,
 };
+
 const mapStateToProps = (state, props) => ({
   post: getPostById(state, props.match.params.id),
 });
+
 const mapDispatchToProps = dispatch => ({
   editPost: (id, data) => dispatch(updatePost(id, data)),
 });
+
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+
 export {
   Container as PostEdit,
   Component as PostEditComponent,

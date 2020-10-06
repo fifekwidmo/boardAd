@@ -17,7 +17,7 @@ const Component = ({ addPost }) => {
           <div>
             <div className={styles.flex}> 
               <h2 className={styles.titlemargin}>Add Post</h2>
-              <BottomNavigationAction  component={Link} to={`${process.env.PUBLIC_URL}/`} variant="contained" icon={<CancelIcon />}></BottomNavigationAction></div>
+              <BottomNavigationAction  component={Link} to={`/`} variant="contained" icon={<CancelIcon />}></BottomNavigationAction></div>
             <SubmitPost action={addPost} type='added' />
           </div>
       }

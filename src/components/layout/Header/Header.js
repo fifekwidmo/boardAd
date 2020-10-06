@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Header.module.scss';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import { initialState } from '../../../redux/initialState';
@@ -9,7 +10,7 @@ const Component = ({ className, children, login }) => (
   <div className={clsx(styles.header, styles.root)}>
     {initialState.role === 'user' || initialState.role === 'admin' ?
       <div>
-        <Button color="primary" variant="contained">My posts</Button>
+        <Button color="primary" component={Link} to="/" variant="contained">Home</Button>
         <Button color="primary" variant="contained">Account</Button>
         <Button color="primary" variant="contained">Favorite adds</Button>
         <Button color="primary" variant="contained">Contact</Button>

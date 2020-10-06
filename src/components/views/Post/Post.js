@@ -28,8 +28,8 @@ class Component extends React.Component {
     return (
       <div className={styles.center}>
         <BottomNavigation>
-          <BottomNavigationAction icon={<EditIcon />} component={Link} to={`${process.env.PUBLIC_URL}/post/${id}/edit`}> </BottomNavigationAction>
-          <BottomNavigationAction component={Link} to={`${process.env.PUBLIC_URL}/`} variant="contained" icon={<CancelIcon />}></BottomNavigationAction>
+          <BottomNavigationAction icon={<EditIcon />} component={Link} to={`/post/${id}/edit`}> </BottomNavigationAction>
+          <BottomNavigationAction component={Link} to={`/`} variant="contained" icon={<CancelIcon />}></BottomNavigationAction>
         </BottomNavigation>
         <h1>{post.title}</h1>
         <h3>Desc: {post.description}</h3>
@@ -45,12 +45,12 @@ const mapStateToProps = (state, props) => ({
   post: getPostById(state),
 });
 
-//to delete props
-
 const mapDispatchToProps = dispatch => ({
   getPost: id => dispatch(loadPostById(id)),
 });
+
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+
 export {
   Container as Post,
   Component as PostComponent,

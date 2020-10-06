@@ -27,6 +27,7 @@ class SubmitPost extends React.Component {
     match: PropTypes.object,
     action: PropTypes.func,
     type: PropTypes.string,
+    history:PropTypes.shape({push:PropTypes.func}),
   };
 
   handleChange = (e) => {
@@ -39,6 +40,7 @@ class SubmitPost extends React.Component {
       },
     });
   }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const { action, type } = this.props;
@@ -50,15 +52,14 @@ class SubmitPost extends React.Component {
     else if (!post.email) error = 'Please insert correct email ';
 
     if (!error) {
-      const formData = new FormData();
+      const formularData = {};
       for (let key of ['title', 'description', 'dateOfPublication', 'dateOfUpdate', 'email', 'status', 'price']) {
-        formData.append(key, post[key]);
-        // console.log('postKey', post[key]);
+        formularData[key] = post[key];
       }
       if (type === 'edited') {
-        action(this.props.postEdit._id, formData);
+        action(this.props.postEdit._id, formularData);
       } else 
-        action(formData);
+        action(formularData);
       this.setState({
         post: {
           title: '',
@@ -70,6 +71,7 @@ class SubmitPost extends React.Component {
           price: '',
         },
       });
+      this.props.history.push('/');
     }
     else {
       alert(error);
@@ -77,7 +79,6 @@ class SubmitPost extends React.Component {
   }
   componentDidMount() {
     const { postEdit } = this.props;
-    // console.log('postedit', postEdit);
     if (postEdit) {
       this.setState({
         post: {
@@ -123,12 +124,11 @@ class SubmitPost extends React.Component {
           <input type='date' name='dateOfPublication' value={post.dateOfPublication} onChange={this.handleChange} required />
         </label>
         <BottomNavigation>
-          <BottomNavigationAction variant='contained' icon={<DoneIcon />} to={`${process.env.PUBLIC_URL}/`} onClick={this.handleSubmit}>{postEdit ? 'Edit' : 'Add'} </BottomNavigationAction>
-          <BottomNavigationAction component={Link} to={`${process.env.PUBLIC_URL}/`} variant="contained" icon={<CancelIcon />}></BottomNavigationAction>
+          <BottomNavigationAction variant='contained' icon={<DoneIcon />} component={Link} to="/" onClick={this.handleSubmit}>{postEdit ? 'Edit' : 'Add'} </BottomNavigationAction>
+          <BottomNavigationAction component={Link} to="/" variant="contained" icon={<CancelIcon />}></BottomNavigationAction>
         </BottomNavigation>
       </form>
     );
   }
 }
-
 export default withRouter(SubmitPost);

@@ -67,7 +67,7 @@ export const updatePost = (id, data) => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());
     Axios
-      .post(`http://localhost:8000/api/posts`, data)
+      .put(`http://localhost:8000/api/posts`, {id: id, data: data})
       .then((res) => {
         console.log('resDATA', res.data);
         dispatch(createActionEditPost(res.data));
@@ -128,7 +128,7 @@ export const reducer = (statePart = [], action = {}) => {
       };
     case EDIT_POST: {
       let posts = statePart.data.map(post => {
-        if (post.id === action.payload.id) post = action.payload;
+        if (post._id === action.payload._id) post = action.payload;
         return post;
       });
       return {
