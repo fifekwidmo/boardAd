@@ -15,7 +15,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const Component = ({ children, posts, fetchPublishedPosts }) => (
   <div className={clsx(styles.container, styles.root)}>
-    {fetchPublishedPosts()}
+    {/* {fetchPublishedPosts()} */}
     {initialState.role === 'user' || initialState.role === 'admin' ?
       <div>
         <BottomNavigation>
